@@ -9,13 +9,18 @@ public class App
     static private Thread th;
     public static void main( String[] args )
     {
+        SwingUtilities.invokeLater(App::createAndShowGUI);
+        //SwingUtilities.invokeLater(() -> createAndShowGUI());
+
+        /* original code pre-lambda:
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
             }
-        });
+        });*/
     }
 
+    // MUST run on swing Thread, so called inside invokeLater
     private static void createAndShowGUI() {
         System.out.println("Created GUI on EDT? "+
                 SwingUtilities.isEventDispatchThread());
@@ -27,12 +32,16 @@ public class App
         th.start();
     }
 
+    @SuppressWarnings("BusyWait")
     static private void addClock(CustomFrame f) {
         th = new Thread(() -> {
             // write here...
             while (true) {
                 LocalDateTime now = LocalDateTime.now();
-                String msg = now.toString();
+                int mm = now.getMinute();
+                int ss = now.getSecond();
+                //String msg = now.toString();
+                String msg = mm + " " + ss;
                 f.setMsg(msg);
                 try {
                     Thread.sleep(1000);
