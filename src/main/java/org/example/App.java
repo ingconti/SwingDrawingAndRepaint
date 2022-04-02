@@ -9,6 +9,7 @@ public class App
     static private Thread th;
     public static void main( String[] args )
     {
+        // using "method reference operator :: "
         SwingUtilities.invokeLater(App::createAndShowGUI);
         //SwingUtilities.invokeLater(() -> createAndShowGUI());
 
